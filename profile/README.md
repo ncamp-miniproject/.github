@@ -7,6 +7,7 @@
 <p>리팩토링에 착수한 AS-IS 시스템은 Servlet, JSP를 투박하게 사용해 구현된 상태였다. MVC 아키텍처도 제대로 적용되지 않았을 뿐더러 Presentation Layer에서 비즈니스 로직을 수행하는 등 아키텍처가 정제되지 않았다. 이러한 낡고 투박한 시스템을 점차 모던한 MVC 시스템으로 변화시켜 나갔다.</p>
 
 ## 리팩토링 단계
+각 리팩토링 단계마다 각 브랜치 페이지에 리팩토링 사항, 추가 구현한 기능, 마주친 문제들과 해결한 방식을 기술하였다.<br>
 1단계, 2단계에서는 Git을 사용하지 않았다.
 
 ### [3. JSP EL/JSTL](https://github.com/ncamp-miniproject/ncamp-miniproject-backend/tree/3_jspel_jstl)
@@ -38,5 +39,27 @@ jQuery의 Ajax를 적용함으로써 서버와 비동기 통신을 구현했다.
 ### [11. CSS Bootstrap](https://github.com/ncamp-miniproject/ncamp-miniproject-backend/tree/11_css_bootstrap)
 CSS Bootstrap을 적용하여 화면단을 디자인했다.
 
+### [12. Spring Boot](https://github.com/ncamp-miniproject/ncamp-miniproject-backend/tree/12_spring_boot)
+프로젝트를 Spring Boot로 이전하였다.
+
 ### To be continued
-기본적인 11단계의 리팩토링이 끝난 이후에도 Spring Framework에 Spring Boot를 적용하고, 리액트로 클라이언트단을 개발하는 등 개발을 계속 진행했다.
+기본적인 12단계의 리팩토링이 끝난 이후에도 Spring Security Framework를 적용하고 리액트로 클라이언트단을 개발하는 등 개발을 계속 진행했다.
+
+## 추가 기능
+- 장바구니
+  - 기존 시스템에서는 하나의 상품에 대해서 한 번의 구매 행위만 일어날 수 있었다. (상품과 구매 사이의 1대1 관계)
+  - 한 번의 구매 행위에 대해 여러 개의 상품을 구매할 수 있도록 transaction_prod 엔터티를 추가했다. (transaction 테이블과 transaction_prod 테이블 사이의 1:N 관계)
+- 상품별 카테고리
+- 파일 업로드
+  - Multipart Form
+  - Base64 인코딩 전송
+- 회원가입 시 이메일 인증
+- Java Reflection API를 사용한 동적 객체 바인딩
+- 상품 목록 정렬
+- 다중 파일 업로드
+- Spring Security
+  - 토큰 기반 인증
+    - JSON 평문 형태의 암호화하지 않은 토큰
+    - JWT
+- 판매자 등록
+- 리액트

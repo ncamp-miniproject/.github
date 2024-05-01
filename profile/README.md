@@ -51,6 +51,7 @@ CSS Bootstrap을 적용하여 화면단을 디자인했다.
   - 한 번의 구매 행위에 대해 여러 개의 상품을 구매할 수 있도록 transaction_prod 엔터티를 추가했다. (transaction 테이블과 transaction_prod 테이블 사이의 1:N 관계)
 - 상품별 카테고리
 - 파일 업로드
+
   - Multipart Form
   - Base64 인코딩 전송
 - 회원가입 시 이메일 인증
@@ -63,3 +64,7 @@ CSS Bootstrap을 적용하여 화면단을 디자인했다.
     - JWT
 - 판매자 등록
 - 리액트
+
+## 배포
+### 클라우드 다이어그램
+![Slice 1](https://github.com/ncamp-miniproject/.github/assets/60085941/79d70213-13fc-4a64-8ba4-1b804db8c00c)

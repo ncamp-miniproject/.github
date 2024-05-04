@@ -45,6 +45,9 @@ CSS Bootstrap을 적용하여 화면단을 디자인했다.
 ### To be continued
 기본적인 12단계의 리팩토링이 끝난 이후에도 Spring Security Framework를 적용하고 리액트로 클라이언트단을 개발하는 등 개발을 계속 진행했다.
 
+## 기술 스택
+![Slice 2](https://github.com/ncamp-miniproject/.github/assets/60085941/c46b5d0f-face-4ce6-abd7-6f6436bdd99e)
+
 ## 추가 기능
 - 장바구니
   - 기존 시스템에서는 하나의 상품에 대해서 한 번의 구매 행위만 일어날 수 있었다. (상품과 구매 사이의 1대1 관계)

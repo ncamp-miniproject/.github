@@ -65,6 +65,254 @@ CSS Bootstrap을 적용하여 화면단을 디자인했다.
 - 판매자 등록
 - 리액트
 
-## 배포
+## 클라우드 배포
 ### 클라우드 다이어그램
 ![Slice 1](https://github.com/ncamp-miniproject/.github/assets/60085941/79d70213-13fc-4a64-8ba4-1b804db8c00c)
+
+### VPC
+ncamp-miniproject
+
+### Subnet
+- ncamp-web-lb-public-subnet
+  - IP 주소 범위: 10.0.255.0/24
+  - Internet Gateway: Y (Public)
+  - 용도: Load Balancer
+  - NACL
+    - 규칙 1
+      - Inbound
+      - port: 80
+      - 출발지: 0.0.0.0/0
+      - 차단
+- ncamp-web-server-priv-subnet
+  - IP 주소 범위: 10.0.1.0/24
+  - Internet Gateway: N (Private)
+  - 용도: 일반 (웹 서버)
+- ncamp-api-priv-subnet
+  - IP 주소 범위: 10.0.2.0/24
+  - Internet Gateway: N (Private)
+  - 용도: 일반 (API 서버)
+- ncamp-cicd-public-subnet
+  - IP 주소 범위: 10.0.100.0/24
+  - Internet Gateway: Y (Public)
+  - 용도: 일반 (CI/CD)
+
+### 서버
+- ncamp-cicd-public-kr2
+  - 하이퍼바이저
+    - KVM
+  - OS
+    - Ubuntu 22.04
+  - 서브넷
+    - ncamp-cicd-public-subnet
+  - 서버 스펙
+    - Standard
+    - s2-g3 (vCPU 2EA, Memory 8GB)
+  - Network Interface
+    - IP: 10.0.100.101
+  - Public IP 할당
+  - 스토리지
+    - 30GB
+  - ACG
+    - Inbound
+      - 규칙 1
+        - TCP
+        - 접근 소스: My IP
+        - 포트: 22
+      - 규칙 2
+        - ICMP
+        - 접근 소스: My IP
+      - 규칙 3
+        - TCP
+        - 접근 소스: My IP
+        - 포트: 8080
+    - Outbound
+      - 규칙 1
+        - TCP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 2
+        - UDP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 3
+        - ICMP
+        - 목적지: 0.0.0.0/0
+- ncamp-web-server-priv-kr2
+  - 용도
+    - HTML/JavaScript/CSS로 이루어진 클라이언트 애플리케이션을 제공하는 제공하는 웹 서버
+  - 하이퍼바이저
+    - KVM
+  - OS
+    - Ubuntu 22.04
+  - 서브넷
+    - ncamp-web-server-priv-subnet
+  - 서버 스펙
+    - Standard
+    - g2-g3 (vCPU 2EA, Memory 8GB)
+  - Network Interface
+    - IP: 10.0.1.101
+  - Public IP 미할당
+  - 스토리지
+    - 50GB
+  - ACG
+    - Inbound
+      - 규칙 1
+        - TCP
+        - 접근 소스: 10.0.0.0/16
+        - 포트: 80
+      - 규칙 2
+        - TCP
+        - 접근 소스: 10.0.0.0/16
+        - 포트: 22
+    - Outbound
+      - 규칙 1
+        - TCP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 2
+        - UDP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 3
+        - ICMP
+        - 목적지: 0.0.0.0/0
+- ncamp-web-server-priv-kr2-2
+  - 용도
+    - High Availability를 위한 두 번째 웹 서버
+  - 하이퍼바이저
+    - KVM
+  - OS
+    - Ubuntu 22.04
+  - 서브넷
+    - ncamp-web-server-priv-subnet
+  - 서버 스펙
+    - Standard
+    - g2-g3 (vCPU 2EA, Memory 8GB)
+  - Network Interface
+    - IP: 10.0.1.101
+  - Public IP 미할당
+  - 스토리지
+    - 50GB
+  - ACG
+    - Inbound
+      - 규칙 1
+        - TCP
+        - 접근 소스: 10.0.0.0/16
+        - 포트: 80
+      - 규칙 2
+        - TCP
+        - 접근 소스: 10.0.0.0/16
+        - 포트: 22
+    - Outbound
+      - 규칙 1
+        - TCP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 2
+        - UDP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 3
+        - ICMP
+        - 목적지: 0.0.0.0/0
+- ncamp-api-priv-kr2
+  - 용도
+    - API 서버
+  - 하이퍼바이저
+    - KVM
+  - OS
+    - Ubuntu 22.04
+  - 서브넷
+    - ncamp-api-priv-subnet
+  - 서버 스펙
+    - High-CPU
+    - c4-g3 (vCPU 4EA, Memory 8GC)
+  - Network Interface
+    - IP: 10.0.2.101
+  - Public IP 미할당
+  - 스토리지
+    - 50GB
+  - ACG
+    - Inbound
+      - 규칙 1
+        - TCP
+        - 접근 소스: 10.0.0.0/16
+        - 포트: 80
+      - 규칙 2
+        - TCP
+        - 접근 소스: 10.0.0.0/16
+        - 포트: 22
+    - Outbound
+      - 규칙 1
+        - TCP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 2
+        - UDP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 3
+        - ICMP
+        - 목적지: 0.0.0.0/0
+- ncamp-api-priv-kr2-2
+  - 용도
+    - 두 번째 API 서버
+  - 하이퍼바이저
+    - KVM
+  - OS
+    - Ubuntu 22.04
+  - 서브넷
+    - ncamp-api-priv-subnet
+  - 서버 스펙
+    - High-CPU
+    - c4-g3 (vCPU 4EA, Memory 8GC)
+  - Network Interface
+    - IP: 10.0.2.101
+  - Public IP 미할당
+  - 스토리지
+    - 50GB
+  - ACG
+    - Inbound
+      - 규칙 1
+        - TCP
+        - 접근 소스: 10.0.0.0/16
+        - 포트: 80
+      - 규칙 2
+        - TCP
+        - 접근 소스: 10.0.0.0/16
+        - 포트: 22
+    - Outbound
+      - 규칙 1
+        - TCP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 2
+        - UDP
+        - 목적지: 0.0.0.0/0
+        - 포트: 1-65535
+      - 규칙 3
+        - ICMP
+        - 목적지: 0.0.0.0/0
+
+### 로드밸런서
+- ncamp-web-server-pub-lb
+  - 용도
+    - 웹 서버용 로드밸런서
+  - 타입
+    - 애플리케이션 로드밸런서
+  - Target group
+    - ncamp-web-server-priv-kr2
+    - ncamp-web-server-priv-kr2-2
+- ncamp-api-pub-lb
+  - 용도
+    - api 서버용 로드밸런서
+  - 타입
+    - 애플리케이션 로드밸런서
+  - Target group
+    - ncamp-api-priv-kr2
+    - ncamp-api-priv-kr2-2
+
+### 기타
+- NAT Gateway 설정
+- Global DNS에 도메인 등록
+- TLS 통신을 위한 인증서 발급
